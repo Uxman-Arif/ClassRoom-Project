@@ -1,0 +1,96 @@
+{% extends "basic.html" %}  
+{% block title %}Upload Assignment{% endblock title %}  
+{% block style %}  
+<style>  
+    body {  
+        font-family: Arial, sans-serif;  
+        background-color: #f9f9f9;  
+        margin: 0;  
+        padding: 20px;  
+    }  
+
+    .container {  
+        max-width: 900px;  
+        margin: auto;  
+        background: white;  
+        border-radius: 8px;  
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+        padding: 20px;  
+    }  
+
+    h1 {  
+        text-align: center;  
+        color: #333;  
+        margin-bottom: 20px;  
+    }  
+
+    .assignment-card {  
+        border: 1px solid #eee;  
+        border-radius: 8px;  
+        padding: 15px;  
+        margin-bottom: 20px;  
+        background-color: #fafafa;  
+        transition: box-shadow 0.3s;  
+    }  
+
+    .assignment-card:hover {  
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  
+    }  
+
+    .row {  
+        margin: 10px 0;  
+    }  
+
+    .btn {  
+        display: inline-block;  
+        margin-top: 10px;  
+        padding: 10px 15px;  
+        background-color: #007bff;  
+        color: white;  
+        text-decoration: none;  
+        border-radius: 5px;  
+        transition: background-color 0.3s;  
+    }  
+
+    .btn:hover {  
+        background-color: #0056b3;  
+    }  
+
+    a {  
+        color: #007bff;  
+        text-decoration: none;  
+    }  
+    
+    a:hover {  
+        text-decoration: underline;  
+    }  
+</style>  
+{% endblock style %}  
+{% block body %}  
+<div class="container">  
+    <h1>Upload Assignment</h1>  
+    <div class="row justify-content-center">  
+        <div class="col-12">  
+            {% for assignment in assin %}  
+            <div class="assignment-card">  
+                <div class="row">  
+                    <div class="col-6"><strong>Start Date:</strong> {{ assignment.start_date }}</div>  
+                    <div class="col-6"><strong>Due Date:</strong> {{ assignment.due_date }}</div>  
+                </div>  
+                <div class="row">  
+                    <div class="col-12"><strong>Description:</strong> {{ assignment.message }}</div>  
+                </div>  
+                <div class="row">  
+                    <div class="col-12">  
+                        <strong>Content:</strong> {{ assignment.content }}   
+                        <a href="/media/{{ assignment.content }}">Download</a>  
+                    </div>  
+                </div>  
+                <a href="{% url 'std_assignment' gglcls.id assignment.id %}" class="btn">Visit</a>  
+            </div>  
+            {% endfor %}  
+        </div>  
+    </div>  
+</div>  
+{% block script %}{% endblock script %}  
+{% endblock body %}

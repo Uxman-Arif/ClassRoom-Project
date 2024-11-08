@@ -1,0 +1,78 @@
+{% extends "basic.html" %}  
+{% block title %}Student Upload Assignment{% endblock title %}  
+{% block style %}  
+<style>  
+    body {  
+        background-color: #f8f9fa;  
+    }  
+    .assignment-card {  
+        background-color: white;  
+        border-radius: 8px;  
+        padding: 15px;  
+        margin: 20px 0;  
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  
+    }  
+    .warning-text {  
+        margin-top: 10px;  
+        font-size: 0.9rem;  
+    }  
+</style>  
+{% endblock style %}  
+{% block body %}  
+<div class="container my-4">  
+    <div class="row justify-content-center">  
+        <div class="col-7 overflow-hidden">  
+            <h1 class="mb-4 fw-bold">Upload Assignment:</h1>  
+            {% for assignment in assin %}  
+            <div class="assignment-card">  
+                <div class="row mb-2">  
+                    <div class="col-6">Start Date: {{ assignment.start_date }}</div>  
+                    <div class="col-6">Due Date: {{ assignment.due_date }}</div>  
+                </div>  
+                <div>  
+                    <strong>Description:</strong> {{ assignment.message }}  
+                </div>  
+                <div>  
+                    <strong>Content:</strong> {{ assignment.content }}  
+                    <a href="/media/{{ assignment.content }}" class="btn btn-secondary btn-sm ms-2">Download</a>  
+                </div>  
+            </div>  
+            {% endfor %}  
+        </div>  
+    </div>  
+    
+    {% for i in secur %}
+        {% if i.studentname.name.username == user.username %}  
+            <div class="row justify-content-center">  
+                <div class="col-7">  
+                    {{i.studentname.id}}
+                    <div class="assignment-card">  
+                        <h3 class="fw-bold">Submitted Assignment:</h3>  
+                        <small class="text-capitalize">{{i.studentname.name.username}}</small>
+                        <p>{{ i.content }}</p>  
+                        <small>Submission Date: {{ i.submission_date }}</small><br>  
+                        <a href="/media/{{ i.content }}" class="btn btn-primary mt-2">View</a>  
+                    </div>  
+                </div>  
+            </div> 
+        {% endif %}  
+    {% empty %} 
+        <div class="row justify-content-center">  
+            <div class="col-7">  
+                <div class="assignment-card">  
+                    <p>Not yet uploaded.</p>  
+                    <form action="" method="post" enctype="multipart/form-data">  
+                        {% csrf_token %}  
+                        <div class="mb-3">  
+                            <label for="submitass" class="form-label">Upload Assignment:</label>  
+                            <input type="file" name="submitass" class="form-control" id="submitass" required>  
+                        </div>  
+                        <span class="text-danger warning-text">Be careful! Once uploaded, it cannot be changed.</span>  
+                        <button type="submit" class="btn btn-primary mt-3">Upload</button>  
+                    </form>  
+                </div>  
+            </div>  
+        </div>  
+    {% endfor %}
+</div>  
+{% endblock body %}

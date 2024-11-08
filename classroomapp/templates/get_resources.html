@@ -1,0 +1,169 @@
+{% extends "basic.html" %}  
+{% block title %}Resources{% endblock title %}  
+{% block style %}  
+<style>  
+    body {  
+        font-family: Arial, sans-serif;  
+        background-color: #f9f9f9;  
+        margin: 0;  
+        padding: 20px;  
+    }  
+
+    .container {  
+        max-width: 900px;  
+        margin: auto;  
+        padding: 20px;  
+        background: white;  
+        border-radius: 8px;  
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+    }  
+
+    h1 {  
+        color: #333;  
+        margin-bottom: 20px;  
+        text-align: center;  
+    }  
+
+    .nav-links {  
+        display: flex;  
+        justify-content: space-around;  
+        margin-bottom: 20px;  
+    }  
+
+    .nav-links a {  
+        padding: 10px 15px;  
+        background-color: #007bff;  
+        color: white;  
+        text-decoration: none;  
+        border-radius: 5px;  
+        transition: background-color 0.3s;  
+    }  
+
+    .nav-links a:hover {  
+        background-color: #0056b3;  
+    }  
+
+    .upload-form {  
+        margin-bottom: 30px;  
+        padding: 20px;  
+        background-color: #f0f8ff;  
+        border-radius: 8px;  
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+    }  
+
+    .upload-form input[type="file"],  
+    .upload-form input[type="text"],  
+    .upload-form button {  
+        width: 100%;  
+        padding: 10px;  
+        margin: 10px 0;  
+        border: 1px solid #ccc;  
+        border-radius: 5px;  
+    }  
+
+    .upload-form button {  
+        background-color: #007bff;  
+        color: white;  
+        border: none;  
+        cursor: pointer;  
+        transition: background-color 0.3s;  
+    }  
+
+    .upload-form button:hover {  
+        background-color: #0056b3;  
+    }  
+
+    .resource-card {  
+        display: flex;  
+        flex-direction: column;  
+        align-items: center;  
+        justify-content: center;  
+        background-color: #343a40;  
+        color: #ffffff;  
+        border-radius: 8px;  
+        padding: 20px;  
+        margin: 10px 0;  
+        text-align: center;  
+        transition: box-shadow 0.3s;  
+    }  
+
+    .resource-card:hover {  
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);  
+    }  
+
+    @media (max-width: 600px) {  
+        .nav-links {  
+            flex-direction: column;  
+            text-align: center;
+        }  
+        .nav-links a {  
+            margin-bottom: 10px;  
+            text-align: center;
+        }  
+        .nav-links button {  
+            margin-bottom: 10px;  
+            width: 100%;
+        }  
+    }  
+</style>  
+{% endblock style %}  
+{% block body %}  
+<div class="container">  
+    <div class="nav-links">  
+        {% if gglcls.instructor.username == user.username %}  
+            <a href="{% url 'upload_assignment' gglcls.id %}">Assignment</a>  
+            <form action="" method="post">{% csrf_token %}
+                <input type="hidden" value="delete" name="btns" id="">
+                <button class="btn btn-danger" type="submit">Delete Class!</button>  
+            </form>
+        {% else %}  
+            <a href="{% url 'get_assignment' gglcls.id %}">Assignment</a>
+            <form action="" method="post">{% csrf_token %}
+                <input type="hidden" value="left" name="btns" id="">
+                <button class="btn btn-danger" type="submit">leave Class!</button>  
+            </form>  
+        {% endif %}  
+        <a href="{% url 'cls_members' gglcls.id %}">Members</a>  
+    </div>  
+
+    {% if gglcls.instructor.username == user.username %}  
+    <h1 class='fw-bold'>Upload Resources</h1>  
+    <form class="upload-form" action="" method="post" enctype="multipart/form-data">  
+        {% csrf_token %}  
+        <label for="lecture">Upload Resource:</label>  
+        <input type="file" name="lecture" id="lecture" required>  
+        
+        <label for="lecmsg">Message:</label>  
+        <input type="text" name="lecmsg" id="lecmsg" placeholder="Enter a message for the resource">  
+        
+        <button type="submit">Upload</button>  
+    </form>  
+    {% endif %}  
+
+    <h1 class='fw-bold'>Resources:</h1>  
+    {% if lecture %}  
+        {% for l in lecture %}  
+        {% if l.lecture %}  
+        <div class="resource-card">  
+            <p>{{ l.lecture }}</p>
+            <p><span class="fw-bold">Message</span> : {{l.message}}</p>
+            <a href="/media/{{ l.lecture }}" class="btn btn-primary m-2">Download Lecture</a>  
+            {% if gglcls.instructor.username == user.username %} 
+            <form action="" method="post">{% csrf_token %}
+                <input type="hidden" value="{{l.lecture}}" name="btnslec" id="">
+                <input type="hidden" value="{{l.message}}" name="btnsmsg" id="">
+                <input type="hidden" value="deletelecture" name="btns" id="">
+                <button class="btn btn-danger" type="submit">Delete</button>  
+            </form>
+            {% endif %}
+        </div>  
+        {% else %}  
+        <span>No Lectures yet</span>  
+        {% endif %}  
+        {% endfor %}  
+    {% else %}  
+        <span>No Resources available.</span>  
+    {% endif %}  
+</div>  
+{% block script %}{% endblock script %}  
+{% endblock body %}

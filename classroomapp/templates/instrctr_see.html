@@ -1,0 +1,78 @@
+{% extends "basic.html" %}  
+{% block title %}View Assignment{% endblock title %}  
+{% block style %}  
+<style>  
+    body {  
+        background-color: #f8f9fa;  
+        font-family: Arial, sans-serif;  
+    }  
+
+    .assignment-card {  
+        background-color: white;  
+        border-radius: 8px;  
+        padding: 15px;  
+        margin: 20px 0;  
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  
+    }  
+
+    .assignment-title {  
+        font-size: 1.25rem;  
+        color: #007bff;  
+        font-weight: bold;  
+        margin-bottom: 10px;  
+    }  
+
+    .assignment-link {  
+        color: #007bff;  
+        font-weight: bold;  
+        text-decoration: none;  
+    }  
+
+    .assignment-link:hover {  
+        text-decoration: underline;  
+    }  
+</style>  
+{% endblock style %}  
+{% block body %}  
+<div class="container my-4">  
+    <div class="row justify-content-center">  
+        {% for assignment in gass %}  
+        <div class="col-md-7 assignment-card">  
+            <div class="row">  
+                <div class="col-md-6">Start Date: {{ assignment.start_date }}</div>  
+                <div class="col-md-6">Due Date: {{ assignment.due_date }}</div>  
+            </div>  
+            <div class="assignment-title">Description:</div>  
+            <span>{{ assignment.message }}</span>  
+            <div>  
+                <span>{{ assignment.content }} </span>  
+                <a href="/media/{{ assignment.content }}" class="assignment-link">Download</a>  
+            </div>  
+        </div>  
+        {% endfor %}  
+    </div>  
+
+    <div class="row justify-content-center">  
+        {% if upldass %}  
+        <h3 class="mt-4">Submitted Assignments:</h3>  
+        {% for upd in upldass %}  
+        <div class="col-md-7 assignment-card">  
+            <div class="row">  
+                <div class="col-md-6 text-capitalize">Student Name: {{ upd.studentname.name.username }}</div>
+            </div>  
+            <div class="row">  
+                <div class="col-md-6">Submission Date: {{ upd.submission_date }}</div>  
+                <div class="col-md-6">Due Date: {{ gass.first.due_date }}</div>  
+            </div>  
+            <div class="assignment-title">Submitted Content:</div>  
+            <span>{{ upd.content }} </span>  
+            <a href="/media/{{ upd.content }}" class="assignment-link">Download</a>  
+        </div>  
+        {% endfor %}  
+        {% else %}  
+        <span class="fw-bold">No assignments submitted yet.</span>  
+        {% endif %}  
+    </div>  
+</div>  
+{% block script %}{% endblock script %}  
+{% endblock body %}

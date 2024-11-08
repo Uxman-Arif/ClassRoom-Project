@@ -1,0 +1,47 @@
+{% extends "basic.html" %}  
+{% load static %}  
+{% block title %}Class Members{% endblock title %}  
+{% block style %}  
+<style>  
+    .profile-pic {  
+        width: 50px;  
+        height: 50px;  
+        border-radius: 50%;  
+    }  
+    .member-card {  
+        background-color: #f8f9fa; /* Light background for members */  
+        border: 1px solid #e0e0e0; /* Subtle border */  
+        border-radius: 5px;  
+        padding: 10px;  
+        margin-bottom: 10px;  
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Light shadow */  
+    }  
+</style>  
+{% endblock style %}  
+{% block body %}  
+<div class="container">  
+    <div class="row justify-content-center">  
+        <div class="col-6">  
+            <h1>Instructor:</h1>  
+            <p class="fw-bold">{{ gglcls.instructor.username }}</p> <!-- Bold instructor name -->  
+            
+            <h1>Members:</h1>  
+            {% for std in stdnts %}  
+            <div class="member-card row align-items-center">  
+                <div class="col-2">  
+                    {% if std.profilepic %}  
+                    <img class="profile-pic" src="/media/{{ std.profilepic }}" alt="{{ std.name.username }}">  
+                    {% else %}  
+                    <img class="profile-pic" src="{% static 'dp.jpeg' %}" alt="Default Profile Picture">  
+                    {% endif %}  
+                </div>  
+                <div class="col-10 fw-bold">  
+                    <h3>{{ std.name.username }}</h3>  
+                </div>  
+            </div>  
+            {% endfor %}  
+        </div>  
+    </div>  
+</div>  
+{% block script %}{% endblock script %}  
+{% endblock body %}

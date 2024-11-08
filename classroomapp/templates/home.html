@@ -1,0 +1,134 @@
+{% extends "basic.html" %}  
+{% block title %}Home{% endblock title %}  
+{% block style %}  
+<style>  
+    body {  
+        background-color: #f8f9fa;  
+        font-family: 'Arial', sans-serif;  
+        margin: 0;  
+        padding: 20px;  
+    }  
+
+    .coverpic{
+        background: url('https://www.shutterstock.com/image-vector/learn-online-book-digital-futuristic-600nw-2182663111.jpg') center no-repeat;
+        background-size: cover;
+        /* opacity: 0.8; */
+        padding: 100px 0px;
+        color: #15f20a;
+    }
+
+    .coverbtn1{
+        color: white;
+        background-color: black;
+        transition: all 0.5s 0.5s ease-in-out;
+        position: relative;
+        animation: moveRight 3s forwards;
+    }
+    
+
+@keyframes moveRight {
+    from {
+        transform: translateX(-10%); /* Start off-screen to the left */
+    }
+    to {
+        transform: translateX(10%); /* End off-screen to the right */
+    }
+}
+
+.coverbtn1:hover{
+        background-color: #15f20a;
+    }
+
+.coverbtn2{
+    background-color: #15f20a;
+    transition: all 0.5s 0.5s ease-in-out;
+    animation: moveleft 3s forwards;
+}
+
+@keyframes moveleft {
+    from {
+        transform: translateX(0%); /* Start off-screen to the left */
+    }
+    to {
+        transform: translateX(20%); /* End off-screen to the right */
+    }
+}
+    
+    .coverbtn2:hover{
+        background-color: black;
+        color: white;
+    }
+
+    .header-title {  
+        text-align: center;  
+        margin-bottom: 50px;  
+        color: #343a40;  
+    }  
+
+    .card {  
+        transition: transform 0.3s;  
+        margin: 20px 0;  
+    }  
+
+    .card:hover {  
+        transform: translateY(-5px);  
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  
+    }  
+
+    .card-title {  
+        font-size: 1.5rem;  
+        color: #007bff;  
+    }  
+
+    .card-link {  
+        font-weight: bold;  
+        color: #007bff;  
+    }  
+
+    .card-link:hover {  
+        text-decoration: underline;  
+    }  
+</style>  
+{% endblock style %}  
+{% block body %}  
+<div class="container-fluid">
+    
+    <div class="row justify-content-cente coverpic">
+        <div class="col-md-5 offset-md-2  text-center">
+                <h3 class="text-center fw-bold">Empower Your Learning Journey: Unlock Knowledge, Collaborate with Peers, and Achieve Your Goals—All in One Place!</h3>
+
+                <a href="{% url 'createclass' %}" class="btn coverbtn1 p-2 m-2">Create a Class!</a>
+                <a href="{% url 'joinclass' %}" class="btn coverbtn2 p-2 m-2">Join a Class!</a>
+            </div>
+    </div>
+</div>
+<div class="container">  
+
+
+    <h1 class="header-title fw-bold text-info">Your Classes as an Instructor:</h1>  
+    <div class="row justify-content-center">  
+        {% for i in instructor %}  
+            <div class="card col-md-3 col-sm-6 m-1" style="width: 18rem;">  
+                <div class="card-body">  
+                    <h1 class="card-title"><a href="{% url 'get_resources' i.id %}" class="card-link">{{ i.Name }}</a> </h1>  
+                     <small>Instructor:{{ i.instructor.username }}</small>
+                </div>  
+            </div>  
+        {% endfor %}  
+    </div>  
+    <hr>
+    <h1 class="header-title fw-bold text-info">Your Classes as a Student:</h1>  
+    <div class="row justify-content-center">  
+        {% for student in students %}  
+            <div class="card col-md-3 col-sm-6 m-1" style="width: 18rem;">  
+                <div class="card-body">  
+                    <h1 class="card-title"><a href="{% url 'get_resources' student.id %}" class="card-link">{{ student.Name }}</a></h1>  
+                    <small>Instructor:{{ student.instructor.username }}</small>
+                </div>  
+            </div>  
+        {% endfor %}  
+    </div>  
+
+</div>  
+{% block script %}{% endblock script %}  
+{% endblock body %}
